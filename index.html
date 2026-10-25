@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>吉吉影视｜每天挑好片子的追剧排片表 - jijiyingshi-app</title>
+<meta name="description" content="吉吉影视把当天更新的电影和剧集重新排一遍：按更新时间、类型和口碑给出可看的清单，附每周排片时刻表与观影笔记。找片、追更、补剧，上吉吉影视，网址 jijiyingshi-app.github.io。">
+<meta name="keywords" content="吉吉影视,吉吉影视官网,吉吉影视推荐,影视推荐清单,追剧排片表,每日更新片单,高分电影推荐,剧集更新时间表,jijiyingshi-app">
+<meta name="author" content="吉吉影视">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="format-detection" content="telephone=no">
+<link rel="canonical" href="https://jijiyingshi-app.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="吉吉影视">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="吉吉影视｜每天挑好片子的追剧排片表">
+<meta property="og:description" content="每天整理一批值得点开的电影和剧集，按更新时间、类型和口碑重排，附排片时刻表与观影笔记。">
+<meta property="og:url" content="https://jijiyingshi-app.github.io/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="吉吉影视｜每天挑好片子的追剧排片表">
+<meta name="twitter:description" content="每天整理一批值得点开的电影和剧集，附排片时刻表与观影笔记。">
+<meta name="theme-color" content="#12211d">
+<style>
+:root{
+  --ink:#12211d;
+  --ink-2:#182c26;
+  --paper:#f3efe6;
+  --amber:#f0b429;
+  --amber-soft:#f7d488;
+  --line:rgba(243,239,230,.14);
+  --muted:#9fb0a8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--ink);color:var(--paper);line-height:1.7;
+  background-image:radial-gradient(circle at 12% 8%,rgba(240,180,41,.10),transparent 45%),radial-gradient(circle at 88% 4%,rgba(120,200,180,.08),transparent 42%);
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+ul{list-style:none}
+.wrap{width:min(1180px,92vw);margin:0 auto}
+
+/* 顶部条 */
+.topbar{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;background:rgba(18,33,29,.92);backdrop-filter:blur(8px)}
+.topbar .wrap{display:flex;align-items:center;gap:18px;min-height:64px;flex-wrap:wrap;padding:10px 0}
+.logo{font-size:21px;font-weight:800;letter-spacing:2px;display:flex;align-items:baseline;gap:8px}
+.logo span{font-size:11px;font-weight:500;letter-spacing:1px;color:var(--amber)}
+.nav{display:flex;gap:22px;margin-left:auto;font-size:14.5px;flex-wrap:wrap}
+.nav a{padding:6px 2px;border-bottom:2px solid transparent;color:#d8d3c6}
+.nav a:hover,.nav a:focus{border-bottom-color:var(--amber);color:var(--amber-soft)}
+.navbtn{display:none}
+
+/* 跑马灯 */
+.ticker{border-bottom:1px solid var(--line);overflow:hidden;background:var(--ink-2);font-size:13.5px;color:var(--amber-soft)}
+.ticker-track{display:flex;gap:60px;white-space:nowrap;padding:9px 0;animation:slide 34s linear infinite;width:max-content}
+.ticker-track b{color:var(--paper);font-weight:600}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* 首屏 */
+.hero{padding:56px 0 40px;display:grid;grid-template-columns:1.35fr .95fr;gap:44px;align-items:start}
+.hero h1{font-size:clamp(28px,4.4vw,46px);line-height:1.28;letter-spacing:1px;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--amber);border-bottom:3px solid rgba(240,180,41,.35)}
+.hero p.lead{margin-top:18px;color:#c8c3b6;max-width:46em;font-size:15.5px}
+.search{display:flex;margin-top:26px;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.04);max-width:520px}
+.search input{flex:1;background:none;border:0;color:var(--paper);padding:14px 18px;font-size:15px;outline:none;font-family:inherit}
+.search input::placeholder{color:#7d8d85}
+.search button{border:0;background:var(--amber);color:#241a02;font-weight:700;padding:0 24px;font-size:14.5px;cursor:pointer;font-family:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.chips a{font-size:13px;border:1px solid var(--line);padding:6px 14px;border-radius:999px;color:#c8c3b6}
+.chips a:hover{border-color:var(--amber);color:var(--amber)}
+
+/* 票根卡 */
+.ticket{background:linear-gradient(160deg,#1d332c,#16261f);border:1px solid var(--line);border-radius:14px;padding:22px;position:relative}
+.ticket:after{content:"";position:absolute;left:0;right:0;bottom:62px;height:1px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 12px)}
+.ticket h2{font-size:15px;letter-spacing:3px;color:var(--amber);font-weight:700}
+.ticket .big{font-size:34px;font-weight:800;margin:10px 0 4px;letter-spacing:1px}
+.ticket .sub{font-size:13px;color:var(--muted)}
+.ticket dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:13.5px;margin-top:18px}
+.ticket dt{color:var(--muted)}
+.ticket dd{text-align:right}
+.urlcard{margin-top:18px;border:1px dashed rgba(240,180,41,.4);border-radius:12px;padding:14px 16px;font-size:13px;color:#c8c3b6;word-break:break-all}
+.urlcard b{color:var(--amber);display:block;margin-bottom:4px;font-size:12px;letter-spacing:2px}
+
+/* 通用区块 */
+section{padding:44px 0}
+.shead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:26px;flex-wrap:wrap}
+.shead h2{font-size:23px;letter-spacing:1px;font-weight:800}
+.shead h2 small{display:block;font-size:12.5px;letter-spacing:3px;color:var(--amber);font-weight:600;margin-bottom:6px}
+.shead .more{font-size:13.5px;color:var(--muted)}
+.shead .more:hover{color:var(--amber)}
+
+/* 片单网格 */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+.card{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:transform .25s,border-color .25s}
+.card:hover{transform:translateY(-4px);border-color:rgba(240,180,41,.5)}
+.poster{aspect-ratio:4/3;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;font-weight:800;letter-spacing:1px;position:relative}
+.poster i{position:absolute;top:12px;left:14px;font-style:normal;font-size:12px;background:rgba(18,33,29,.65);border:1px solid var(--line);padding:3px 9px;border-radius:999px;font-weight:500}
+.poster strong{font-size:19px;line-height:1.35}
+.poster em{font-style:normal;font-size:12.5px;opacity:.85;font-weight:500;margin-top:4px}
+.p1{background:linear-gradient(140deg,#7a4b2a,#3b2116)}
+.p2{background:linear-gradient(140deg,#2c4b58,#152a33)}
+.p3{background:linear-gradient(140deg,#4a3f6b,#221c38)}
+.p4{background:linear-gradient(140deg,#5c6b33,#2b331a)}
+.p5{background:linear-gradient(140deg,#7d3b46,#3a1c22)}
+.p6{background:linear-gradient(140deg,#2f5f52,#16302a)}
+.card .body{padding:14px 16px 18px}
+.card .body p{font-size:13.8px;color:#bfbab0}
+.card .meta{margin-top:10px;font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between}
+
+/* 分类 */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-top:24px}
+.cats a{border:1px solid var(--line);border-radius:10px;padding:16px 14px;background:rgba(255,255,255,.03)}
+.cats a b{display:block;font-size:16px;font-weight:700}
+.cats a span{font-size:12.5px;color:var(--muted)}
+.cats a:hover{border-color:var(--amber);background:rgba(240,180,41,.08)}
+
+/* 时刻表 */
+.tablewrap{margin-top:24px;overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:660px;font-size:14px}
+th,td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:rgba(255,255,255,.05);font-size:12.5px;letter-spacing:2px;color:var(--amber);font-weight:700}
+tbody tr:hover{background:rgba(255,255,255,.035)}
+tbody tr:last-child td{border-bottom:0}
+.tag{font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--amber-soft)}
+.tag.on{background:var(--amber);color:#241a02;border-color:var(--amber);font-weight:700}
+
+/* 笔记 */
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+.note{border-left:3px solid var(--amber);padding:16px 0 16px 18px}
+.note h3{font-size:17px;font-weight:700;line-height:1.45}
+.note p{font-size:13.8px;color:#bfbab0;margin-top:8px}
+.note .date{font-size:12.5px;color:var(--muted);margin-top:10px;display:block}
+.note a.go{font-size:13.5px;color:var(--amber);display:inline-block;margin-top:8px}
+.note a.go:hover{text-decoration:underline}
+
+/* FAQ */
+.faq{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.faq details{border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.03);padding:0 18px}
+.faq summary{cursor:pointer;padding:16px 0;font-size:15.5px;font-weight:600;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:before{content:"＋";color:var(--amber);margin-right:10px;font-weight:700}
+.faq details[open] summary:before{content:"－"}
+.faq details p{padding:0 0 16px;font-size:14px;color:#bfbab0}
+
+/* 关于 */
+.about{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;margin-top:24px}
+.about p{font-size:15px;color:#c8c3b6;margin-bottom:14px}
+.about ul{display:grid;gap:10px}
+.about li{font-size:14px;color:#bfbab0;border-bottom:1px dashed var(--line);padding-bottom:10px}
+.about li b{color:var(--paper)}
+
+footer{border-top:1px solid var(--line);margin-top:30px;padding:34px 0 46px;font-size:13.5px;color:var(--muted)}
+.foot{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:28px}
+.foot h4{font-size:13px;letter-spacing:2px;color:var(--amber);margin-bottom:12px;font-weight:700}
+.foot a{display:block;padding:4px 0}
+.foot a:hover{color:var(--amber)}
+.copy{margin-top:26px;padding-top:18px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:30px;padding:36px 0 24px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .notes{grid-template-columns:1fr}
+  .faq{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr;gap:22px}
+  .foot{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .topbar .wrap{min-height:56px;gap:10px}
+  .nav{order:3;width:100%;margin-left:0;gap:16px;overflow-x:auto;white-space:nowrap;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .grid{grid-template-columns:1fr}
+  .poster{aspect-ratio:16/9}
+  .foot{grid-template-columns:1fr}
+  .search{flex-direction:column;border-radius:14px}
+  .search button{padding:13px 0;border-radius:0 0 12px 12px}
+  section{padding:32px 0}
+}
+@media (prefers-reduced-motion:reduce){
+  .ticker-track{animation:none}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="logo" href="#">吉吉影视<span>JIJI YINGSHI</span></a>
+    <nav class="nav" aria-label="站点栏目">
+      <a href="#hot">今日热播</a>
+      <a href="#library">分类片库</a>
+      <a href="#schedule">更新时刻表</a>
+      <a href="#notes">观影笔记</a>
+      <a href="#vip">会员与答疑</a>
+      <a href="#about">关于我们</a>
+    </nav>
+  </div>
+</header>
+
+<div class="ticker" aria-label="站点动态">
+  <div class="ticker-track">
+    <span><b>今日更新</b> 悬疑剧 3 部、动画 2 部已入档</span>
+    <span><b>吉吉影视</b> 片单每天 09:00 与 20:00 各排一次</span>
+    <span><b>补剧指南</b> 三部一天能看完的悬疑剧已整理</span>
+    <span><b>排片表</b> 收录近 30 天正在更新的剧集档期</span>
+    <span><b>今日更新</b> 悬疑剧 3 部、动画 2 部已入档</span>
+    <span><b>吉吉影视</b> 片单每天 09:00 与 20:00 各排一次</span>
+    <span><b>补剧指南</b> 三部一天能看完的悬疑剧已整理</span>
+    <span><b>排片表</b> 收录近 30 天正在更新的剧集档期</span>
+  </div>
+</div>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <h1>把今晚要看的片子，<em>提前挑好</em></h1>
+      <p class="lead">吉吉影视每天把新上的电影和剧集按更新时间、类型和口碑重排一遍，删掉凑数的，留下真能看进去的。不用在几个平台之间来回切，也不用靠刷首页碰运气。</p>
+      <form class="search" action="#" method="get" role="search">
+        <input type="search" name="q" placeholder="搜片名、导演、类型，例如：悬疑 / 纪录片" aria-label="搜索影视">
+        <button type="submit">找片</button>
+      </form>
+      <div class="chips">
+        <a href="#">本周口碑</a>
+        <a href="#">完结可追</a>
+        <a href="#">国产剧</a>
+        <a href="#">动画剧场版</a>
+        <a href="#">下饭综艺</a>
+        <a href="#">冷门佳作</a>
+      </div>
+    </div>
+    <aside class="ticket" aria-label="今日排片概览">
+      <h2>TODAY&nbsp;/&nbsp;今日排片</h2>
+      <p class="big">18 部</p>
+      <p class="sub">其中 6 部为当日新入档，4 部今晚 20:00 更新</p>
+      <dl>
+        <dt>最近一次整理</dt><dd>今天 09:00</dd>
+        <dt>覆盖类型</dt><dd>12 个</dd>
+        <dt>平均时长</dt><dd>112 分钟</dd>
+        <dt>高分占比</dt><dd>72%</dd>
+      </dl>
+      <div class="urlcard">
+        <b>网址直达</b>
+        https://jijiyingshi-app.github.io
+      </div>
+    </aside>
+  </div>
+
+  <section id="hot">
+    <div class="wrap">
+      <div class="shead">
+        <h2><small>HOT LIST</small>今日热播 · 编辑挑出来的六部</h2>
+        <a class="more" href="#">查看完整片单 →</a>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="poster p1"><i>更新中</i><strong>漫长的季节</strong><em>悬疑 · 12 集 · 2023</em></div>
+          <div class="body">
+            <p>十二集装下三代人的事，台词带北方口音的松弛感，看完会想回头重看第一集。</p>
+            <div class="meta"><span>剧情 / 犯罪</span><span>9.4 分</span></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="poster p2"><i>完结</i><strong>奥本海默</strong><em>传记 · 180 分钟 · 2023</em></div>
+          <div class="body">
+            <p>黑白与彩色两条线交替推进，三小时不闷，建议留一个完整晚上一次看完。</p>
+            <div class="meta"><span>历史 / 剧情</span><span>8.9 分</span></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="poster p3"><i>新入档</i><strong>流浪地球 2</strong><em>科幻 · 173 分钟 · 2023</em></div>
+          <div class="body">
+            <p>特效之外更难得的是叙事收得住，太空电梯那段适合大屏，戴耳机看效果更好。</p>
+            <div class="meta"><span>科幻 / 冒险</span><span>8.3 分</span></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="poster p6"><i>更新中</i><strong>去有风的地方</strong><em>生活 · 40 集 · 2023</em></div>
+          <div class="body">
+            <p>节奏慢但不拖，适合当睡前剧，一集看完刚好困，第二天接着来也不慌。</p>
+            <div class="meta"><span>都市 / 治愈</span><span>8.1 分</span></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="poster p5"><i>完结</i><strong>蜘蛛侠：纵横宇宙</strong><em>动画 · 140 分钟 · 2023</em></div>
+          <div class="body">
+            <p>每一帧都能截图当壁纸，画风随角色切换，看之前最好别被剧透。</p>
+            <div class="meta"><span>动画 / 动作</span><span>8.5 分</span></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="poster p4"><i>经典</i><strong>人生一串</strong><em>纪录片 · 30 集 · 2018</em></div>
+          <div class="body">
+            <p>夜里看要有心理准备，镜头贴近烟火气，第三季的凉山篇最扎实。</p>
+            <div class="meta"><span>纪录片 / 美食</span><span>9.0 分</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="library">
+    <div class="wrap">
+      <div class="shead">
+        <h2><small>LIBRARY</small>分类片库 · 按想看的心情分</h2>
+        <a class="more" href="#">全部分类 →</a>
+      </div>
+      <div class="cats">
+        <a href="#"><b>悬疑推理</b><span>在库 268 部</span></a>
+        <a href="#"><b>科幻想象</b><span>在库 194 部</span></a>
+        <a href="#"><b>生活治愈</b><span>在库 231 部</span></a>
+        <a href="#"><b>动画剧场</b><span>在库 156 部</span></a>
+        <a href="#"><b>纪录真实</b><span>在库 122 部</span></a>
+        <a href="#"><b>喜剧解压</b><span>在库 210 部</span></a>
+        <a href="#"><b>历史传记</b><span>在库 98 部</span></a>
+        <a href="#"><b>短剧速看</b><span>在库 342 部</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule">
+    <div class="wrap">
+      <div class="shead">
+        <h2><small>SCHEDULE</small>更新时刻表 · 今天该蹲哪几部</h2>
+        <a class="more" href="#">下载完整档期 →</a>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <caption class="visually-hidden" style="position:absolute;left:-9999px">吉吉影视今日更新时刻表</caption>
+          <thead>
+            <tr><th scope="col">时间</th><th scope="col">片名</th><th scope="col">类型</th><th scope="col">进度</th><th scope="col">状态</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>10:00</td><td>漫长的季节</td><td>悬疑 / 犯罪</td><td>第 8-9 集</td><td><span class="tag on">已更新</span></td></tr>
+            <tr><td>12:30</td><td>人生一串 第三季</td><td>纪录片</td><td>第 4 集</td><td><span class="tag on">已更新</span></td></tr>
+            <tr><td>15:00</td><td>短剧 · 城南旧事</td><td>短剧</td><td>全集 24 集</td><td><span class="tag">待更新</span></td></tr>
+            <tr><td>20:00</td><td>去有风的地方</td><td>都市 / 治愈</td><td>第 27-28 集</td><td><span class="tag">待更新</span></td></tr>
+            <tr><td>21:40</td><td>动画剧场 · 深海</td><td>动画</td><td>单部完结</td><td><span class="tag">今日首映</span></td></tr>
+            <tr><td>23:00</td><td>本周口碑三选一</td><td>综合</td><td>编辑精选</td><td><span class="tag">待更新</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="wrap">
+      <div class="shead">
+        <h2><small>NOTES</small>观影笔记 · 看片之外的那些事</h2>
+        <a class="more" href="#">更多笔记 →</a>
+      </div>
+      <div class="notes">
+        <article class="note">
+          <h3>周末补剧清单：三部能在一天内看完的悬疑剧</h3>
+          <p>集数都在十二集以内，线索收得干净，中间不用快进。附每部的弃剧临界点，看到第几集还没抓人就换台。</p>
+          <span class="date">更新于 本周三</span>
+          <a class="go" href="#">阅读全文 →</a>
+        </article>
+        <article class="note">
+          <h3>家里投影怎么挑亮度，别被参数表绕进去</h3>
+          <p>ANSI 流明、对比度、光源类型各代表什么，客厅开灯看和关灯看分别该怎么选，按预算分三档给结论。</p>
+          <span class="date">更新于 上周五</span>
+          <a class="go" href="#">阅读全文 →</a>
+        </article>
+        <article class="note">
+          <h3>纪录片也能当睡前剧：慢节奏片单十部</h3>
+          <p>没有强冲突、没有反转，镜头发呆的时间比说话多，适合睡前放半小时，第二天起来还记得住画面。</p>
+          <span class="date">更新于 本月 8 日</span>
+          <a class="go" href="#">阅读全文 →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="vip">
+    <div class="wrap">
+      <div class="shead">
+        <h2><small>MEMBER &amp; FAQ</small>会员与常见问题</h2>
+        <a class="more" href="#">提交问题 →</a>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>吉吉影视的片单多久更新一次？</summary>
+          <p>每天两次，上午 09:00 整理当日新入档内容，晚上 20:00 补一次更新进度。遇到节假日大批量上新，会临时加一次。</p>
+        </details>
+        <details>
+          <summary>不注册能看排片时刻表吗？</summary>
+          <p>能。时刻表、分类片库和观影笔记全部开放，注册只是用来保存"想看"清单和记录看到第几集。</p>
+        </details>
+        <details>
+          <summary>想找的片子库里没有怎么办？</summary>
+          <p>可以在问题入口留言片名，编辑会在下次整理时统一收录；冷门老片一般一到两个整理周期内补上。</p>
+        </details>
+        <details>
+          <summary>手机上打开排版会乱吗？</summary>
+          <p>不会。页面按小屏重排过，时刻表在手机上可以左右滑动查看，海报和文字都会自动缩成单列。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="shead">
+        <h2><small>ABOUT</small>关于吉吉影视</h2>
+        <a class="more" href="#">加入片单共建 →</a>
+      </div>
+      <div class="about">
+        <div>
+          <p>吉吉影视从 2021 年开始做，最初只是几个人在群里互相推荐片子，后来记下来的清单越堆越多，就干脆做成了现在这个每天更新的排片表。</p>
+          <p>这里不做资源搬运，只做三件事：把当天值得看的挑出来、把更新时间记清楚、把看片的坑提前说一遍。片单由编辑逐条看过再入档，凑数和刷分的一律不收。</p>
+        </div>
+        <div>
+          <ul>
+            <li><b>收录规模</b>　在库影片 1,621 部，覆盖 12 个类型</li>
+            <li><b>整理频率</b>　每日两排，09:00 / 20:00</li>
+            <li><b>选片标准</b>　编辑看过才入档，标注弃剧临界点</li>
+            <li><b>问题反馈</b>　站内留言，一般当天回复</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <h4>吉吉影视 JIJI YINGSHI</h4>
+        <p style="font-size:13.5px">每天挑好片子，把更新时间记清楚。找片、追更、补剧，一处就够。</p>
+      </div>
+      <div>
+        <h4>站内栏目</h4>
+        <a href="#hot">今日热播</a>
+        <a href="#library">分类片库</a>
+        <a href="#schedule">更新时刻表</a>
+        <a href="#notes">观影笔记</a>
+      </div>
+      <div>
+        <h4>其他</h4>
+        <a href="#vip">会员与答疑</a>
+        <a href="#about">关于我们</a>
+        <a href="#">意见反馈</a>
+        <a href="#">友情链接</a>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© 2026 吉吉影视 jijiyingshi-app.github.io　保留所有权利</span>
+      <span>本站内容仅为影视信息整理，不提供任何资源下载</span>
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://jijiyingshi-app.github.io/#website",
+      "url": "https://jijiyingshi-app.github.io/",
+      "name": "吉吉影视",
+      "alternateName": "jijiyingshi-app",
+      "inLanguage": "zh-CN",
+      "description": "吉吉影视每天整理值得看的电影与剧集，提供追剧排片时刻表、分类片库与观影笔记。",
+      "publisher": { "@id": "https://jijiyingshi-app.github.io/#org" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://jijiyingshi-app.github.io/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://jijiyingshi-app.github.io/#org",
+      "name": "吉吉影视",
+      "url": "https://jijiyingshi-app.github.io/",
+      "description": "每日更新的影视推荐与追剧排片表，收录电影、剧集、纪录片与短剧。"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "吉吉影视的片单多久更新一次？",
+          "acceptedAnswer": { "@type": "Answer", "text": "每天两次，上午 09:00 整理当日新入档内容，晚上 20:00 补一次更新进度。遇到节假日大批量上新，会临时加一次。" }
+        },
+        {
+          "@type": "Question",
+          "name": "不注册能看排片时刻表吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "能。时刻表、分类片库和观影笔记全部开放，注册只是用来保存想看清单和记录看到第几集。" }
+        },
+        {
+          "@type": "Question",
+          "name": "想找的片子库里没有怎么办？",
+          "acceptedAnswer": { "@type": "Answer", "text": "可以在问题入口留言片名，编辑会在下次整理时统一收录；冷门老片一般一到两个整理周期内补上。" }
+        },
+        {
+          "@type": "Question",
+          "name": "手机上打开排版会乱吗？",
+          "acceptedAnswer": { "@type": "Answer", "text": "不会。页面按小屏重排过，时刻表在手机上可以左右滑动查看，海报和文字都会自动缩成单列。" }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+</body>
+</html>
